@@ -1,0 +1,14 @@
+# 웹 프레임워크
+fastapi==0.115.0    # 웹 프레임워크
+uvicorn==0.37.0     # FastAPI 서버
+
+# 데이터 검증
+pydantic==2.9.2         # 데이터 검증
+email-validator==2.2.0  # 이메일 검증
+bcrypt==4.2.0           # 비밀번호 암복호화
+
+# ORM
+SQLAlchemy==2.0.34      # DB ORM
+
+# DB
+pymysql==1.1.1          # mysql 드라이버
