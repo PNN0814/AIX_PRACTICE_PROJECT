@@ -1,0 +1,2 @@
+# AIX_PRACTICE_PROJECT
+AI-X 수업에서 HTML, CSS, JAVA SCRIPT, AI, FASTAPI 등을 활용하여 실습 진행을 위한 깃 저장소
