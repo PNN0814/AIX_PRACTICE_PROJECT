@@ -1,19 +1,19 @@
-# 환경
-## 환경 생성
+**환경 생성**
 
 conda create -n AIX_PRACTICE_PROJECT_310 python=3.10 -y
 
-## 환경 활성화
+**환경 활성화**
 
 conda activate AIX_PRACTICE_PROJECT_310
 
-## 요구사항 설치(경로 확인 필수)
+**요구사항 설치(경로 확인 필수)**
 
 pip install -r requirements/requirements.txt
 
 ---
 
-# 실행
+**실행**
+
 1. AIX_PRACTICE_PROJECT를 vscode에서 열기
 2. AIX_PRACTICE_PROJECT_310 환경으로 세팅
 3. 요구사항(requirements) 설치
@@ -23,7 +23,8 @@ pip install -r requirements/requirements.txt
 
 ---
 
-# http://127.0.0.1:8000/docs 설명
+**http://127.0.0.1:8000/docs 설명**
+
 1. /userInfo(GET) - 유저 정보 확인
 2. /userCreate(POST) - 유저 생성
 3. /userPwUpdate(PATCH) - 유저 비밀번호 변경
