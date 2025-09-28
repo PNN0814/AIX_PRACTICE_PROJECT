@@ -1,12 +1,12 @@
 # 환경
 - 환경 생성
-  conda create -n AIX_PRACTICE_PROJECT_310 python=3.10 -y
+- conda create -n AIX_PRACTICE_PROJECT_310 python=3.10 -y
 
 - 환경 활성화
-  conda activate AIX_PRACTICE_PROJECT_310
+- conda activate AIX_PRACTICE_PROJECT_310
 
 - 요구사항 설치(경로 확인 필수)
-  pip install -r requirements/requirements.txt
+- pip install -r requirements/requirements.txt
 
 
 
