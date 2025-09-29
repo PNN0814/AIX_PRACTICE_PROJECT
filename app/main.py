@@ -118,7 +118,8 @@ def user_pw_update(no_seq : int, data : UserPwUpdate):
         return {"msg" : "비밀번호가 정상적으로 변경 되었습니다."}
 
 # =====================================================================================================================================
-# 0992_신효빈-delete 삭제 추가
+
+# 0929_신효빈-delete 삭제 추가
 # 삭제 - delete
 @app.patch("/userDelete/{no_seq}")
 def user_delete(no_seq:int, data : UserDelete):
@@ -126,11 +127,11 @@ def user_delete(no_seq:int, data : UserDelete):
         stmt = select(UserInfo).where(UserInfo.no_seq == no_seq)
         query = db.execute(stmt).scalar_one_or_none()
 
-# no_seq의 회원의 데이터가 없으면
+        # no_seq의 회원의 데이터가 없으면
         if not query:
             raise HTTPException(status_code=404, detail="일치한 회원 정보가 없습니다.")
         
- # 입력된 현재 비밀번호 검증
+         # 입력된 현재 비밀번호 검증
         if not bcrypt.checkpw(data.user_pw.get_secret_value().encode("utf-8"), query.user_pw.encode("utf-8")):
             raise HTTPException(status_code = 400, detail = "현재 비밀번호가 일치하지 않습니다.")
         
@@ -139,7 +140,6 @@ def user_delete(no_seq:int, data : UserDelete):
         db.refresh(query)
         
         return {"msg" : "계정이 삭제되었습니다."}
-    
 
 # =====================================================================================================================================
 
@@ -184,6 +184,7 @@ def user_login(data : UserLogin):
         
 
         return query
+
 
 
 
