@@ -36,20 +36,6 @@ app.add_middleware(
 )
 
 # =====================================================================================================================================
-
-# get = read
-@app.get("/userInfo", response_model = List[UserBase])
-def user_info():
-    with session_factory() as db:
-        # UserInfo 기반 데이터 select
-        stmt = select(UserInfo)
-
-        # 모든 데이터 가져오기 왜? 정보 확인 페이지니까
-        query = db.execute(stmt).scalars().all()
-
-        return query
-
-# =====================================================================================================================================
 # get = read (특정 유저 조회)
 @app.get("/userInfo/{no_seq}", response_model = UserRead)
 def user_read(no_seq : int):
@@ -133,6 +119,29 @@ def user_pw_update(no_seq : int, data : UserPwUpdate):
 
 # =====================================================================================================================================
 
+# 회원 정보 수정
+@app.put("/userUpdate/{no_seq}", response_model = UserBase)
+def user_update(no_seq : int, data : UserUpdate):
+    with session_factory() as db:
+        stmt = select(UserInfo).where(UserInfo.no_seq == no_seq)
+        query = db.execute(stmt).scalar_one_or_none()
+
+        if not query:
+            raise HTTPException(status_code = 404, detail = "회원 정보가 없습니다.")
+        
+        query.user_email = data.user_email
+        query.user_addr1 = data.user_addr1
+        query.user_addr2 = data.user_addr2
+        query.user_post = data.user_post
+        query.user_birth = data.user_birth
+
+        db.commit()
+        db.refresh(query)
+
+        return query
+
+# =====================================================================================================================================
+
 # 간단한 로그인 테스트
 @app.post("/userLogin", response_model = UserBase)
 def user_login(data : UserLogin):
@@ -151,4 +160,5 @@ def user_login(data : UserLogin):
         
 
         return query
+
 
