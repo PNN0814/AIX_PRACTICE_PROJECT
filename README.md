@@ -3,7 +3,7 @@
 
 
 **환경 활성화**
-- conda activate AIX_PRACTICE_PROJECT_310\
+- conda activate AIX_PRACTICE_PROJECT_310
 
 
 **요구사항 설치(경로 확인 필수)**
