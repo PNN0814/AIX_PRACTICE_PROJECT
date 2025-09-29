@@ -3,7 +3,7 @@
 
 
 **환경 활성화**
-- conda activate AIX_PRACTICE_PROJECT_310\
+- conda activate AIX_PRACTICE_PROJECT_310
 
 
 **요구사항 설치(경로 확인 필수)**
@@ -26,3 +26,4 @@
 2. /userCreate(POST) - 유저 생성
 3. /userPwUpdate(PATCH) - 유저 비밀번호 변경
 4. /userLogin(POST) - 로그인
+
