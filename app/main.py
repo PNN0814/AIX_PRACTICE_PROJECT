@@ -16,7 +16,7 @@ from db import Base, UserInfo
 from db import UserBase, UserCreate, UserRead, UserUpdate, UserDelete, UserPwUpdate, UserLogin
 
 # database 객체 import
-from db import Base, engine, session_factory
+from db import engine, session_factory
 
 # =====================================================================================================================================
 
@@ -134,4 +134,5 @@ def user_login(data : UserLogin):
         if not bcrypt.checkpw(data.user_pw.get_secret_value().encode("utf-8"), query.user_pw.encode("utf-8")):
             raise HTTPException(status_code = 400, detail = "비밀번호가 일치하지 않습니다.")
         
+
         return query
