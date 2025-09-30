@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <title>로그인</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/app/frontend/user/css/style.css"/>
+</head>
+<body class="login-page">
+  <div class="fullscreen-bg"><img src="/app/frontend/user/image/background.jpg" alt="배경"/></div>
+
+  <div class="login-center">
+    <div class="login-card card">
+      <div class="login-card-header">
+        <h1 class="login-title">로그인</h1>
+        <p class="login-desc">계정 정보를 입력해주세요</p>
+      </div>
+
+      <div class="login-card-content login-form">
+        <label for="li_id">아이디</label>
+        <input id="li_id" type="text" placeholder="아이디를 입력하세요" class="input-soft"/>
+
+        <label for="li_pw">비밀번호</label>
+        <input id="li_pw" type="password" placeholder="비밀번호를 입력하세요" class="input-soft"/>
+
+        <div class="actions stack">
+          <button class="btn login-primary" onclick="location.href='/app/frontend/user/html/index.html'" id="doLogin">로그인</button>
+          <button class="btn login-outline" onclick="location.href='/app/frontend/user/html/signup.html'">회원가입</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn ghost back-home" onclick="location.href='/app/frontend/user/html/index.html'">← 메인</button>
+  <aside class="mascot-side"><img src="/app/frontend/user/image/kid.png" alt="키드"/></aside>
+
+  <script src="/app/frontend/user/js/login.js"></script>
+</body>
+</html>

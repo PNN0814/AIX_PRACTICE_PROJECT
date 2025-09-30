@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>채용공고만 하는 사이트 | 자유게시판</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/app/frontend/user/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <h1>채용공고만 하는 사이트</h1>
+      <p class="subtitle">We don't wanna you</p>
+    </div>
+
+    <!-- ✅ 헤더 버튼 id를 JS와 통일 -->
+    <div class="auth-area">
+      <div id="guestMenu">
+        <button class="btn ghost" onclick="location.href='/app/frontend/user/html/login.html'">로그인</button>
+        <button class="btn primary" onclick="location.href='/app/frontend/user/html/signup.html'">회원가입</button>
+      </div>
+      <div id="memberMenu" class="hidden">
+        <span id="helloUser"></span>
+        <button id="goMy" class="btn ghost">내정보</button>
+        <button id="doLogout" class="btn danger">로그아웃</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 게시판 -->
+  <div class="container board-wrap">
+    <main class="board card">
+      <div class="board-toolbar">
+        <form id="searchForm" class="search-box">
+          <select id="filterField" aria-label="검색 대상">
+            <option value="title">제목</option>
+            <option value="content">내용</option>
+            <option value="author">작성자</option>
+          </select>
+          <input type="text" id="q" placeholder="검색어를 입력하세요" />
+          <select id="sortBy" aria-label="정렬">
+            <option value="date_desc">최신순</option>
+            <option value="date_asc">오래된순</option>
+            <option value="views_desc">조회수높은순</option>
+            <option value="views_asc">조회수낮은순</option>
+          </select>
+          <button class="btn ghost" type="submit">검색</button>
+        </form>
+        <button class="btn primary" id="openWrite">✍️ 글쓰기</button>
+      </div>
+
+      <section class="board-list">
+        <table class="board-table">
+          <thead>
+            <tr><th>제목</th><th>작성자</th><th>작성일자</th><th>조회수</th></tr>
+          </thead>
+          <tbody id="postList"></tbody>
+        </table>
+      </section>
+
+      <nav class="pagination" id="paging"></nav>
+    </main>
+  </div>
+
+  <!-- 마스코트 -->
+  <aside class="mascot-side"><img src="/app/frontend/user/image/mascot.png" alt="마스코트" /></aside>
+  <aside class="mascot-sub"><img src="/app/frontend/user/image/mascot_sub.png" alt="서브 마스코트" /></aside>
+
+  <!-- 푸터 -->
+  <footer class="site-footer">© 2025 채용공고라 읽고 쓰고 싶은 대로 쓰는 어디한번 해봐라 사이트.</footer>
+
+  <!-- JS -->
+  <script src="../js/app.js"></script>
+</body>
+</html>
