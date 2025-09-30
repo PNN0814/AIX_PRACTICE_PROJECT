@@ -141,6 +141,38 @@ def user_delete(no_seq:int, data : UserDelete):
         
         return {"msg" : "계정이 삭제되었습니다."}
 
+
+#=====================================================================================================================================
+
+# 0930_이유진 - 내정보 수정 추가
+# 내정보 수정 - update
+@app.patch("/userUpdate/{no_seq}", response_model=UserUpdate)
+def user_update(no_seq: int, data: UserUpdate):
+    with session_factory() as db:
+        stmt = select(UserInfo).where(UserInfo.no_seq == no_seq)
+        user = db.execute(stmt).scalar_one_or_none()
+        if not user:
+            raise HTTPException(status_code=404, detail="해당 회원 없음")
+        user.user_email = data.user_email
+        user.user_addr1 = data.user_addr1
+        user.user_addr2 = data.user_addr2
+        user.user_post = data.user_post
+        db.commit()
+        db.refresh(user)
+        return user
+
+# 회원 비활성화
+@app.patch("/userDeactivate/{no_seq}")
+def user_deactivate(no_seq: int):
+    with session_factory() as db:
+        stmt = select(UserInfo).where(UserInfo.no_seq == no_seq)
+        user = db.execute(stmt).scalar_one_or_none()
+        if not user:
+            raise HTTPException(status_code=404, detail="해당 회원 없음")
+        user.user_delete_yn = "Y"
+        db.commit()
+        return {"msg": "비활성화 처리 완료"}
+
 # =====================================================================================================================================
 
 # 회원 정보 수정
@@ -184,6 +216,7 @@ def user_login(data : UserLogin):
         
 
         return query
+
 
 
 
