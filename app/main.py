@@ -15,6 +15,9 @@ from db import Base, UserInfo
 # schemas 객체 import
 from db import UserBase, UserCreate, UserRead, UserUpdate, UserDelete, UserPwUpdate, UserLogin
 
+# admin_schemas 객체 import -1001 유진수정
+from db import AdminLoginRequest, AdminLoginResponse, AdminPasswordChange, PostBase, PostCreate, PostUpdate
+
 # database 객체 import
 from db import engine, session_factory
 
@@ -216,6 +219,165 @@ def user_login(data : UserLogin):
         
 
         return query
+
+
+# 10.01 수정사항(유진)==================================================================================================================
+
+# =====================================================================================================================================
+# 관리자 권한 체크 함수 (의존성)
+# =====================================================================================================================================
+
+def get_current_admin_user(authorization: Optional[str] = Header(None)):
+    """
+    관리자 권한 체크
+    TODO: JWT 토큰 기반 인증으로 변경 권장
+    """
+    # 임시: 헤더 검증 없이 진행 (개발용)
+    return {"admin_gubun": "ADMIN"}
+
+# =====================================================================================================================================
+# 관리자 API (Admin API) - /admin/ prefix
+# =====================================================================================================================================
+
+@app.post("/admin/login", response_model=AdminLoginResponse)
+def admin_login(data: AdminLoginRequest):
+    """
+    관리자 로그인
+    - admin 테이블에서 조회
+    - admin_delete_yn = 'N'인 계정만 로그인 가능
+    """
+    with session_factory() as db:
+        # admin_id로 관리자 검색
+        stmt = select(AdminInfo).where(AdminInfo.admin_id == data.admin_id)
+        admin = db.execute(stmt).scalar_one_or_none()
+
+        if not admin:
+            raise HTTPException(status_code=404, detail="일치한 관리자 정보가 없습니다.")
+
+        # 비활성화된 계정 체크
+        if admin.admin_delete_yn == "Y":
+            raise HTTPException(status_code=403, detail="비활성화된 관리자 계정입니다.")
+
+        # 비밀번호 검증
+        if not bcrypt.checkpw(data.admin_pw.get_secret_value().encode("utf-8"), admin.admin_pw.encode("utf-8")):
+            raise HTTPException(status_code=400, detail="비밀번호가 일치하지 않습니다.")
+
+        return admin
+
+
+# ========== 유저 관리 API ==========
+
+@app.get("/admin/users", response_model=List[UserBase])
+def admin_get_users(
+    skip: int = 0,
+    limit: int = 100,
+    current_admin = Depends(get_current_admin_user)
+):
+    """관리자: 전체 유저 목록 조회"""
+    with session_factory() as db:
+        stmt = select(UserInfo).offset(skip).limit(limit)
+        users = db.execute(stmt).scalars().all()
+        return users
+
+
+@app.get("/admin/users/{no_seq}", response_model=UserRead)
+def admin_get_user(no_seq: int, current_admin = Depends(get_current_admin_user)):
+    """관리자: 특정 유저 상세 조회"""
+    with session_factory() as db:
+        stmt = select(UserInfo).where(UserInfo.no_seq == no_seq)
+        user = db.execute(stmt).scalar_one_or_none()
+        if not user:
+            raise HTTPException(status_code=404, detail="해당 회원이 없습니다.")
+        return user
+
+
+@app.post("/admin/users", response_model=UserCreate)
+def admin_create_user(data: UserCreate, current_admin = Depends(get_current_admin_user)):
+    """관리자: 유저 추가"""
+    with session_factory() as db:
+        # 중복 체크
+        stmt = select(UserInfo).where(UserInfo.user_id == data.user_id)
+        if db.execute(stmt).scalar_one_or_none():
+            raise HTTPException(status_code=400, detail="이미 존재하는 아이디입니다.")
+
+        # 비밀번호 암호화
+        encrypt_pw = bcrypt.hashpw(data.user_pw.get_secret_value().encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+        db_user = UserInfo(
+            user_id=data.user_id, user_pw=encrypt_pw, user_email=data.user_email,
+            user_addr1=data.user_addr1, user_addr2=data.user_addr2,
+            user_post=data.user_post, user_birth=data.user_birth,
+            user_create_date=datetime.now(), user_delete_yn="N"
+        )
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+
+
+@app.patch("/admin/users/{no_seq}", response_model=UserUpdate)
+def admin_update_user(no_seq: int, data: UserUpdate, current_admin = Depends(get_current_admin_user)):
+    """관리자: 유저 정보 수정"""
+    with session_factory() as db:
+        stmt = select(UserInfo).where(UserInfo.no_seq == no_seq)
+        user = db.execute(stmt).scalar_one_or_none()
+        if not user:
+            raise HTTPException(status_code=404, detail="해당 회원이 없습니다.")
+        
+        user.user_email = data.user_email
+        user.user_addr1 = data.user_addr1
+        user.user_addr2 = data.user_addr2
+        user.user_post = data.user_post
+        db.commit()
+        db.refresh(user)
+        return user
+
+
+@app.patch("/admin/users/{no_seq}/password")
+def admin_change_user_password(no_seq: int, data: AdminPasswordChange, current_admin = Depends(get_current_admin_user)):
+    """관리자: 유저 비밀번호 강제 변경"""
+    with session_factory() as db:
+        stmt = select(UserInfo).where(UserInfo.no_seq == no_seq)
+        user = db.execute(stmt).scalar_one_or_none()
+        if not user:
+            raise HTTPException(status_code=404, detail="해당 회원이 없습니다.")
+        
+        new_pw = data.new_password.get_secret_value()
+        if len(new_pw) < 8:
+            raise HTTPException(status_code=400, detail="비밀번호는 8자 이상이어야 합니다.")
+        
+        encrypt_pw = bcrypt.hashpw(new_pw.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+        user.user_pw = encrypt_pw
+        db.commit()
+        return {"msg": "비밀번호가 변경되었습니다.", "success": True}
+
+
+@app.patch("/admin/users/{no_seq}/deactivate")
+def admin_deactivate_user(no_seq: int, current_admin = Depends(get_current_admin_user)):
+    """관리자: 유저 비활성화"""
+    with session_factory() as db:
+        stmt = select(UserInfo).where(UserInfo.no_seq == no_seq)
+        user = db.execute(stmt).scalar_one_or_none()
+        if not user:
+            raise HTTPException(status_code=404, detail="해당 회원이 없습니다.")
+        
+        user.user_delete_yn = "Y"
+        db.commit()
+        return {"msg": "유저가 비활성화되었습니다.", "success": True}
+
+
+@app.delete("/admin/users/{no_seq}")
+def admin_delete_user(no_seq: int, current_admin = Depends(get_current_admin_user)):
+    """관리자: 유저 완전 삭제"""
+    with session_factory() as db:
+        stmt = select(UserInfo).where(UserInfo.no_seq == no_seq)
+        user = db.execute(stmt).scalar_one_or_none()
+        if not user:
+            raise HTTPException(status_code=404, detail="해당 회원이 없습니다.")
+        
+        db.delete(user)
+        db.commit()
+        return {"msg": "유저가 삭제되었습니다.", "success": True}
 
 
 
