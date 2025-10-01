@@ -2,11 +2,11 @@
 # 각 class는 테이블 생성이고 테이블 생성 시 필요한 테이블 이름, 설정, 컬럼의 정보들을 기입합니다.
 
 # database.py에서 연결한 db 테이블과 매핑시키는 역할
-from sqlalchemy import String, Integer, Date, DateTime
+from sqlalchemy import String, Integer, Date, DateTime, TEXT  # TEXT 추가(신효빈)
 from sqlalchemy.orm import Mapped, mapped_column
 
 # date, datetimne형 데이터를 넣기 위한 import
-from datetime import date, datetime
+from datetime import date, datetime 
 
 # database.py에 Base를 가져옴
 from .database import Base
@@ -116,5 +116,68 @@ class AdminInfo(Base):
 
     # 블라블라 컬럼 생성
 
+
+# =====================================================================================================================================
+# 여기서부터 추가(신효빈)
+# 자유 게시판 테이블
+class FreeBoard(Base):
+    __tablename__ = "freeboard"
+
+    __table_args__ = {
+        "comment" : "자유 게시판",
+        "mysql_charset" : "utf8mb4"
+    }
+
+    # 게시글 번호
+    board_seq : Mapped[int] = mapped_column(primary_key=True, autoincrement=True, comment="게시글 번호")
+    
+    # 작성자 (UserInfo의 no_seq 참조)
+    user_seq : Mapped[int] = mapped_column(Integer, nullable=False, comment="작성자 번호")
+    
+    # 게시글 제목
+    board_title : Mapped[str] = mapped_column(String(200), nullable=False, comment="게시글 제목")
+    
+    # 게시글 내용
+    board_content : Mapped[TEXT] = mapped_column(TEXT, nullable=False, comment="게시글 내용")
+    
+    # 조회수
+    board_view : Mapped[int] = mapped_column(Integer, insert_default=0, comment="조회수")
+    
+    # 작성일
+    board_create_date : Mapped[datetime] = mapped_column(DateTime, nullable=False, insert_default=datetime.now(), comment="작성일")
+    
+    # 수정일
+    board_update_date : Mapped[datetime] = mapped_column(DateTime, insert_default=datetime.now(), comment="수정일")
+    
+    # 삭제 여부
+    board_delete_yn : Mapped[str] = mapped_column(String(1), insert_default="N", comment="삭제 여부")
+
+# =====================================================================================================================================
+# 댓글 테이블
+class BoardComment(Base):
+    __tablename__ = "board_comment"
+
+    __table_args__ = {
+        "comment" : "게시판 댓글",
+        "mysql_charset" : "utf8mb4"
+    }
+
+    # 댓글 번호
+    comment_seq : Mapped[int] = mapped_column(primary_key=True, autoincrement=True, comment="댓글 번호")
+    
+    # 게시글 번호 (FreeBoard의 board_seq 참조)
+    board_seq : Mapped[int] = mapped_column(Integer, nullable=False, comment="게시글 번호")
+    
+    # 작성자 (UserInfo의 no_seq 참조)
+    user_seq : Mapped[int] = mapped_column(Integer, nullable=False, comment="작성자 번호")
+    
+    # 댓글 내용
+    comment_content : Mapped[str] = mapped_column(String(1000), nullable=False, comment="댓글 내용")
+    
+    # 작성일
+    comment_create_date : Mapped[datetime] = mapped_column(DateTime, nullable=False, insert_default=datetime.now(), comment="작성일")
+    
+    # 삭제 여부
+    comment_delete_yn : Mapped[str] = mapped_column(String(1), insert_default="N", comment="삭제 여부")
 
 # =====================================================================================================================================
