@@ -305,83 +305,6 @@ header.site-header .subtitle {
   .mascot-side img { width: 220px; right: 2%; bottom: 2%; transform: rotate(-4deg); opacity: .9; }
 }
 
-
-/* ===============================
-   관리자 로그인 모달 레이아웃
-   =============================== */
-
-/* 브라우저 기본 dialog 여백 제거 + 투명 배경 */
-dialog.modal { 
-  padding: 0; 
-  border: none; 
-  background: transparent; 
-}
-
-/* 뒤배경 반투명 */
-dialog.modal::backdrop { 
-  background: rgba(0,0,0,.25); 
-}
-
-/* 모달 카드: 화면폭을 넘지 않도록 width 제한 */
-dialog .modal-body {
-  width: min(92vw, 480px);           /* ✅ 최대 480px, 모바일은 뷰포트 기준 */
-  box-sizing: border-box;            /* ✅ 테두리/패딩 포함 */
-  max-height: min(88vh, 680px);      /* 세로도 안전하게 */
-  overflow: auto;                    /* 긴 내용은 내부 스크롤 */
-  
-  margin: 0 auto;
-  padding: 18px;
-  background: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 14px;
-  box-shadow: 0 18px 50px rgba(0,0,0,.2);
-}
-
-/* 타이틀 간격 */
-dialog .modal-body h3 { 
-  margin: 0 0 8px; 
-}
-
-/* ✅ 모달 내부 인풋이 가로를 초과하지 않도록 강제 */
-dialog .modal-body .form { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 8px; 
-}
-dialog .modal-body .form label { 
-  font-weight: 600; 
-  color: #1F2937; 
-  font-size: .92rem; 
-}
-dialog .modal-body .form input {
-  width: 100%;
-  box-sizing: border-box;            /* ✅ 핵심 */
-  padding: 12px 14px;
-  border: 1px solid #E5E7EB !important;
-  border-radius: 12px;
-  background: #F3F4F6;
-  outline: none;
-}
-
-/* 버튼영역 정렬 */
-dialog .modal-actions { 
-  display: flex; 
-  justify-content: flex-end; 
-  gap: 10px; 
-  margin-top: 10px; 
-}
-
-/* 관리자 버튼 톤(보라) */
-.btn.admin { 
-  background: #5B4BDB; 
-  color: #fff; 
-  border: 1px solid #3E2FD1; 
-  border-radius: 12px; 
-  padding: 10px 16px; 
-  font-weight: 700; 
-}
-.btn.admin:hover { filter: brightness(0.96); }
-
 /* === 공통 카드 업그레이드 === */
 .page-card { padding: 24px; border-radius: 16px; background: #fff; border: 2px solid #111; box-shadow: 6px 6px 0 #00d9ff; }
 .card-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
@@ -545,4 +468,5 @@ input:focus,textarea:focus,select:focus{box-shadow:0 0 0 3px rgba(255,214,10,.45
   .mascot-train .walking-mascot-2 { width: 50px; height: 50px; margin-left: -15px; }
   .mascot-train .walking-mascot-2 img { width: 50px; height: 50px; }
 }
+
 
