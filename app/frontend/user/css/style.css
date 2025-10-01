@@ -413,57 +413,6 @@ input:focus, textarea:focus, select:focus { box-shadow: 0 0 0 3px rgba(255,214,1
 /* 첨부 이미지 그리드 여백 보강 */
 .attach-grid { margin-top:8px; }
 
-/* ...기존 style.css 내용... */
-
-/* === 공통 카드 업그레이드 === */
-.page-card { padding: 24px; border-radius: 16px; background: #fff; border: 2px solid #111; box-shadow: 6px 6px 0 #00d9ff; }
-.card-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
-.card-title { font-size:1.25rem; font-weight:800; letter-spacing:-.01em; }
-.card-sub    { font-size:.92rem; color:#6B7280; }
-.divider { height:1px; background:linear-gradient(90deg,#000 0 20%,transparent 20% 100%); opacity:.2; margin:14px 0; }
-
-.form .hint { color:#6B7280; font-size:.85rem; margin-top:6px; }
-input[type="text"], input[type="email"], input[type="password"], textarea, select {
-  box-sizing:border-box;
-  transition: box-shadow .15s ease, transform .05s ease;
-}
-input:focus, textarea:focus, select:focus { box-shadow: 0 0 0 3px rgba(255,214,10,.45); outline:none; }
-
-.badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border:2px solid #000; border-radius:999px; background:#fff; font-weight:700; }
-.btn.gradient { background: linear-gradient(180deg,#ffe680,#ffd60a); border:2px solid #000; }
-.btn.soft     { background:#fff; border:2px dashed #000; }
-.btn.block    { width:100%; }
-
-.board-table tr:hover { background:#fff7cc; transition: background .15s; }
-.attach-grid { margin-top:8px; }
-
-
-/* === 공통 카드 업그레이드 === */
-.page-card { padding: 24px; border-radius: 16px; background: #fff; border: 2px solid #111; box-shadow: 6px 6px 0 #00d9ff; }
-.card-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
-.card-title { font-size:1.25rem; font-weight:800; letter-spacing:-.01em; }
-.card-sub    { font-size:.92rem; color:#6B7280; }
-.divider { height:1px; background:linear-gradient(90deg,#000 0 20%,transparent 20% 100%); opacity:.2; margin:14px 0; }
-
-/* 입력류 공통 포커스/트랜지션 */
-.form .hint { color:#6B7280; font-size:.85rem; margin-top:6px; }
-input[type="text"], input[type="email"], input[type="password"], input[type="date"], textarea, select {
-  box-sizing:border-box; transition: box-shadow .15s ease, transform .05s ease;
-}
-input:focus, textarea:focus, select:focus { box-shadow: 0 0 0 3px rgba(255,214,10,.45); outline:none; }
-
-/* 배지/버튼 보강 */
-.badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border:2px solid #000; border-radius:999px; background:#fff; font-weight:700; }
-.btn.gradient { background: linear-gradient(180deg,#ffe680,#ffd60a); border:2px solid #000; }
-.btn.block    { width:100%; }
-
-/* 테이블 호버 */
-.board-table tr:hover { background:#fff7cc; transition: background .15s; }
-
-/* 첨부 썸네일 여백 */
-.attach-grid { margin-top:8px; }
-
-
 /* === 공통 카드 업그레이드 (중복 정의가 있다면 한 번만 유지) === */
 .page-card{padding:24px;border-radius:16px;background:#fff;border:2px solid #111;box-shadow:6px 6px 0 #00d9ff;}
 .card-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
@@ -596,3 +545,4 @@ input:focus,textarea:focus,select:focus{box-shadow:0 0 0 3px rgba(255,214,10,.45
   .mascot-train .walking-mascot-2 { width: 50px; height: 50px; margin-left: -15px; }
   .mascot-train .walking-mascot-2 img { width: 50px; height: 50px; }
 }
+
