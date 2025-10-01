@@ -372,7 +372,7 @@ input:focus,textarea:focus,select:focus{box-shadow:0 0 0 3px rgba(255,214,10,.45
 
 .mascot-train {
   position: absolute;
-  top: 75%;
+  top: 70%;
   left: -20%;
   transform: translateY(-50%);
   display: flex;
@@ -468,5 +468,6 @@ input:focus,textarea:focus,select:focus{box-shadow:0 0 0 3px rgba(255,214,10,.45
   .mascot-train .walking-mascot-2 { width: 50px; height: 50px; margin-left: -15px; }
   .mascot-train .walking-mascot-2 img { width: 50px; height: 50px; }
 }
+
 
 
