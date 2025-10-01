@@ -15,7 +15,8 @@ from typing import Optional, Literal
 
 # date형 데이터를 넣기 위한 import
 from datetime import date
-
+# 시간 세부 표시 위한 import 추가 (신효빈)
+from datetime import datetime
 # 공통 베이스
 class UserBase(BaseModel):
     user_id : Optional[str] = None
@@ -67,4 +68,64 @@ class UserRead(UserBase):
 # 테스트용 로그인
 class UserLogin(BaseModel):
     user_id : str = Field(...)
+
     user_pw : SecretStr = Field(...)
+
+# =====================================================================================================================================
+# 여기서부터 추거(신효빈)
+# 게시판 관련 스키마
+
+# 게시글 생성
+class BoardCreate(BaseModel):
+    board_title : str = Field(..., min_length=1, max_length=200)
+    board_content : str = Field(..., min_length=1, max_length=5000)
+
+# 게시글 수정
+class BoardUpdate(BaseModel):
+    board_title : Optional[str] = Field(None, min_length=1, max_length=200)
+    board_content : Optional[str] = Field(None, min_length=1, max_length=5000)
+
+# 게시글 상세 조회 (응답)
+class BoardRead(BaseModel):
+    board_seq : int
+    user_seq : int
+    user_id : str  # 작성자 아이디 (JOIN)
+    board_title : str
+    board_content : str
+    board_view : int
+    board_create_date : datetime
+    board_update_date : datetime
+    board_delete_yn : str
+
+    model_config = ConfigDict(from_attributes=True)
+
+# 게시글 목록 조회 (간단 버전)
+class BoardList(BaseModel):
+    board_seq : int
+    user_id : str
+    board_title : str
+    board_view : int
+    board_create_date : datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+# =====================================================================================================================================
+# 댓글 관련 스키마
+
+# 댓글 생성
+class CommentCreate(BaseModel):
+    comment_content : str = Field(..., min_length=1, max_length=1000)
+
+# 댓글 조회 (응답)
+class CommentRead(BaseModel):
+    comment_seq : int
+    board_seq : int
+    user_seq : int
+    user_id : str  # 작성자 아이디 (JOIN)
+    comment_content : str
+    comment_create_date : datetime
+    comment_delete_yn : str
+
+    model_config = ConfigDict(from_attributes=True)
+
+# =====================================================================================================================================
