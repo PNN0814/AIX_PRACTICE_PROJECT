@@ -5,6 +5,7 @@
   <title>채용공고만 하는 사이트 | 자유게시판</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="/app/frontend/user/css/style.css" />
+  <link rel="stylesheet" href="../css/index.css" />  <!--신효빈 추가 : 경로 index.css로 잡으면댐-->
 </head>
 <body>
   <header class="site-header">
@@ -88,6 +89,43 @@
 
   <!-- JS -->
   <script src="../js/app.js"></script>
+ <!-- 1001 이것부터 신효빈 추가  -->
+ <!-- 마스코트 도망가기 --> 
+  <script>
+    window.addEventListener('load', () => {
+      const mascotSide = document.querySelector('.mascot-side');
+      const mascotSub = document.querySelector('.mascot-sub');
+      
+      if (mascotSide && mascotSub) {
+        document.addEventListener('mousemove', (e) => {
+          // 오른쪽 마스코트 (우측으로 도망)
+          const rectSide = mascotSide.getBoundingClientRect();
+          const centerXSide = rectSide.left + rectSide.width / 2;
+          const centerYSide = rectSide.top + rectSide.height / 2;
+          const distanceSide = Math.hypot(e.clientX - centerXSide, e.clientY - centerYSide);
+          
+          if (distanceSide < 200) {
+            mascotSide.style.transform = 'translateX(200px)';
+          } else {
+            mascotSide.style.transform = 'translateX(0)';
+          }
+
+          // 왼쪽 마스코트 (우측으로 도망)
+          const rectSub = mascotSub.getBoundingClientRect();
+          const centerXSub = rectSub.left + rectSub.width / 2;
+          const centerYSub = rectSub.top + rectSub.height / 2;
+          const distanceSub = Math.hypot(e.clientX - centerXSub, e.clientY - centerYSub);
+          
+          if (distanceSub < 200) {
+            mascotSub.style.transform = 'translate(200px, -50%)';
+          } else {
+            mascotSub.style.transform = 'translate(0, -50%)';
+          }
+        });
+      }
+    });
+  </script>
 </body>
-</html>
+
+
 
