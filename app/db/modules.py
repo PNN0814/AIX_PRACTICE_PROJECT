@@ -59,6 +59,50 @@ class UserInfo(Base):
     # 1 길이의 varchar형 컬럼, 기본값 = "N", null 불가 / 예시 : Y
     user_delete_yn : Mapped[str] = mapped_column(String(1), insert_default = "N", comment = "계정 삭제 체크")
 
+
+
+# =====================================================================================================================================
+# 관리자 정보 테이블 (추가) 10.01유진작성
+# =====================================================================================================================================
+class AdminInfo(Base):
+    """
+    관리자 정보 테이블
+    - ERD의 admin 테이블과 매핑
+    - 관리자 로그인 및 권한 관리에 사용
+    """
+    # 테이블 이름 지정
+    __tablename__ = "admin"
+    
+    # 테이블의 comment, charset 지정
+    __table_args__ = {
+        "comment": "관리자 정보 테이블",
+        "mysql_charset": "utf8mb4"
+    }
+    
+    # int형 기본키, 숫자 자동 추가
+    no_seq: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, comment="자동 index 번호")
+    
+    # 30 길이의 varchar형 컬럼, 중복 불가, null 불가
+    admin_id: Mapped[str] = mapped_column(String(30), unique=True, nullable=False, comment="관리자 아이디")
+    
+    # 100 길이의 varchar형 컬럼, null 불가
+    admin_pw: Mapped[str] = mapped_column(String(100), nullable=False, comment="관리자 비밀번호")
+    
+    # 10 길이의 varchar형 컬럼 - 관리자 구분 (슈퍼, 일반 등)
+    admin_gubun: Mapped[str] = mapped_column(String(10), nullable=False, insert_default="ADMIN", comment="관리자 구분")
+    
+    # datetime형 컬럼, null 불가
+    admin_create_date: Mapped[datetime] = mapped_column(DateTime, nullable=False, insert_default=datetime.now(), comment="관리자 계정 생성일")
+    
+    # datetime형 컬럼
+    admin_update_date: Mapped[datetime] = mapped_column(DateTime, insert_default=datetime.now(), comment="관리자 계정 수정일")
+    
+    # datetime형 컬럼
+    admin_delete_date: Mapped[datetime] = mapped_column(DateTime, insert_default=datetime.now(), comment="관리자 계정 삭제일")
+    
+    # 1 길이의 varchar형 컬럼, 기본값 = "N"
+    admin_delete_yn: Mapped[str] = mapped_column(String(1), insert_default="N", nullable=False, comment="관리자 계정 삭제 체크")
+
 # =====================================================================================================================================
 
 # 자유 게시판 / 새로운 테이블 생성 시 이렇게 할 거 같은디
@@ -71,5 +115,6 @@ class UserInfo(Base):
 #     }
 
     # 블라블라 컬럼 생성
+
 
 # =====================================================================================================================================
