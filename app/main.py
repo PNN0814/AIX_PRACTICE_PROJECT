@@ -1,8 +1,8 @@
 # FastAPI 세팅
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, , Depends, Header # Depends, Header 추가
 from fastapi.middleware.cors import CORSMiddleware
 
-from typing import List
+from typing import List,Optional # Optional 추가
 from sqlalchemy import select
 from datetime import datetime
 
@@ -10,13 +10,13 @@ from datetime import datetime
 import bcrypt
 
 # modules 객체 import
-from db import Base, UserInfo
+from db import Base, UserInfo, AdminInfo #AdminInfo 추가
 
 # schemas 객체 import
 from db import UserBase, UserCreate, UserRead, UserUpdate, UserDelete, UserPwUpdate, UserLogin
 
 # admin_schemas 객체 import -1001 유진수정
-from db import AdminLoginRequest, AdminLoginResponse, AdminPasswordChange, PostBase, PostCreate, PostUpdate
+from db import AdminLoginRequest, AdminLoginResponse, AdminPasswordChange
 
 # database 객체 import
 from db import engine, session_factory
@@ -378,6 +378,7 @@ def admin_delete_user(no_seq: int, current_admin = Depends(get_current_admin_use
         db.delete(user)
         db.commit()
         return {"msg": "유저가 삭제되었습니다.", "success": True}
+
 
 
 
