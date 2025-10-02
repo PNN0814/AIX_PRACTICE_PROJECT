@@ -3,7 +3,10 @@ from fastapi import FastAPI, HTTPException, Request, Form, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
+from fastapi.encoders import jsonable_encoder
+
+from starlette.middleware.sessions import SessionMiddleware
 
 from typing import List, Optional
 from sqlalchemy import select, func, and_, or_ # 1001 신효빈 추가 func, and_, or_
@@ -43,6 +46,11 @@ app.add_middleware(
     allow_origins = origins,
     allow_methods = ["*"],
     allow_headers = ["*"]
+)
+
+app.add_middleware(
+    SessionMiddleware, 
+    secret_key="AIX_PRACTICE_PROJECT"
 )
 
 # =====================================================================================================================================
@@ -287,10 +295,20 @@ def user_login(request : Request, data: UserLogin = Depends(UserLogin.form)):
             return {"success" : False, "message" : "비밀번호가 일치하지 않습니다."}
             # raise HTTPException(status_code = 400, detail = "비밀번호가 일치하지 않습니다.")
         
+        request.session["user_id"] = query.user_id
+        request.session["no_seq"] = query.no_seq  # 필요하면 추가
+
         userLoginData = UserRead.model_validate(query)
 
         return {"success" : True, "data" : userLoginData}
         # return user_temp.TemplateResponse("index.html", {"request" : request, "data" : userLoginData})
+
+# 로그아웃 페이지 - 2025-10-02 정기홍
+@app.get("/logout", response_class = HTMLResponse)
+async def login_page(request: Request):
+    request.session["user_id"] = None
+    request.session["no_seq"] = None
+    return user_temp.TemplateResponse("login.html", {"request": request})
 
 # 10.01 수정사항(유진)==================================================================================================================
 # =====================================================================================================================================
@@ -309,12 +327,6 @@ def get_current_admin_user(authorization: Optional[str] = Header(None)):
 # 관리자 API (Admin API) - /admin/ prefix
 # =====================================================================================================================================
 
-# 관리자 로그인 페이지 - 2025-10-02 이유진
-@app.get("/admin/loginPage", response_class = HTMLResponse)
-async def login_page(request: Request):
-    return admin_temp.TemplateResponse("admin_login.html", {"request": request})
-
-# 로그인 처리 프로세스 - 2025-10-02 이유진
 @app.post("/admin/login", response_model=AdminLoginResponse)
 def admin_login(data: AdminLoginRequest):
     """
@@ -462,6 +474,7 @@ def admin_delete_user(no_seq: int, current_admin = Depends(get_current_admin_use
 # 게시글 목록 조회 (검색, 페이징, 댓글 개수 포함)
 @app.get("/board/list")
 def board_list(
+    request: Request,
     search_type: Optional[str] = None,
     search_keyword: Optional[str] = None,
     page: int = 1,
@@ -478,7 +491,7 @@ def board_list(
             .group_by(BoardComment.board_seq)
             .subquery()
         )
-        
+
         # 기본 쿼리
         stmt = select(
             FreeBoard.board_seq,
@@ -509,38 +522,69 @@ def board_list(
                     )
                 )
 
-        # 정렬 및 페이징
         stmt = stmt.order_by(FreeBoard.board_create_date.desc())
         offset = (page - 1) * size
         stmt = stmt.offset(offset).limit(size)
-
         results = db.execute(stmt).all()
 
-        return [
+        boardListData = [
             {
                 "board_seq": row.board_seq,
                 "user_id": row.user_id,
                 "board_title": row.board_title,
                 "board_view": row.board_view,
-                "board_create_date": row.board_create_date,
+                "board_create_date": row.board_create_date.strftime("%Y-%m-%d %H:%M:%S"),
                 "comment_count": row.comment_count
             }
             for row in results
         ]
 
+        # 세션
+        user_id = request.session.get("user_id")
+        no_seq = request.session.get("no_seq")
+
+        # Accept 헤더에 따라 반환 분기
+        if request.headers.get("accept") == "application/json":
+            return JSONResponse(content=boardListData)
+        else:
+            return user_temp.TemplateResponse(
+                "index.html", 
+                {"request": request, "data": boardListData, "user_id": user_id, "no_seq": no_seq}
+            )
+
+# 게시글 작성 페이지 - 2025-10-01 정기홍
+@app.get("/board/createPage", response_class = HTMLResponse)
+async def board_create_page(request: Request):
+    # 세션
+    user_id = request.session.get("user_id")
+    no_seq = request.session.get("no_seq")
+
+    return user_temp.TemplateResponse("board_write.html", {"request": request, "user_id": user_id, "no_seq": no_seq})
+
+# 게시글 상세 페이지 - 2025-10-02 정기홍
+@app.get("/board/readPage/{board_seq}", response_class = HTMLResponse)
+async def board_read_page(request: Request, board_seq : int):
+    # 세션
+    user_id = request.session.get("user_id")
+    no_seq = request.session.get("no_seq")
+
+    return user_temp.TemplateResponse("board_detail.html", {"request": request, "user_id": user_id, "no_seq": no_seq, "board_seq" : board_seq})
+
 # 게시글 상세 조회
-@app.get("/board/{board_seq}", response_model=BoardRead)
+@app.get("/board/{board_seq}", response_class=HTMLResponse)
 def board_detail(board_seq: int):
     with session_factory() as db:
-        stmt = select(
-            FreeBoard,
-            UserInfo.user_id
-        ).join(
-            UserInfo, FreeBoard.user_seq == UserInfo.no_seq
-        ).where(
-            and_(
-                FreeBoard.board_seq == board_seq,
-                FreeBoard.board_delete_yn == "N"
+        stmt = (
+            select(
+                FreeBoard,
+                UserInfo.user_id
+            )
+            .join(UserInfo, FreeBoard.user_seq == UserInfo.no_seq)
+            .where(
+                and_(
+                    FreeBoard.board_seq == board_seq,
+                    FreeBoard.board_delete_yn == "N"
+                )
             )
         )
 
@@ -556,17 +600,20 @@ def board_detail(board_seq: int):
         db.commit()
         db.refresh(board)
 
-        return BoardRead(
+        # DTO로 변환
+        boardDetailData = BoardRead(
             board_seq=board.board_seq,
             user_seq=board.user_seq,
             user_id=user_id,
             board_title=board.board_title,
             board_content=board.board_content,
             board_view=board.board_view,
-            board_create_date=board.board_create_date,
-            board_update_date=board.board_update_date,
+            board_create_date=board.board_create_date.strftime("%Y-%m-%d %H:%M:%S"),
+            board_update_date=board.board_update_date.strftime("%Y-%m-%d %H:%M:%S"),
             board_delete_yn=board.board_delete_yn
         )
+
+        return JSONResponse(content=jsonable_encoder(boardDetailData))
 
 # 게시글 작성
 @app.post("/board/create", response_model=BoardRead)
@@ -606,9 +653,18 @@ def board_create(data: BoardCreate, user_seq: int):
             board_delete_yn=new_board.board_delete_yn
         )
 
+# 게시글 수정 페이지 - 2025-10-02 정기홍
+@app.get("/board/updatePage/{board_seq}", response_class = HTMLResponse)
+async def board_read_page(request: Request, board_seq : int):
+    # 세션
+    user_id = request.session.get("user_id")
+    no_seq = request.session.get("no_seq")
+
+    return user_temp.TemplateResponse("board_write.html", {"request": request, "user_id": user_id, "no_seq": no_seq, "board_seq" : board_seq})
+
 # 게시글 수정
 @app.patch("/board/{board_seq}", response_model=BoardRead)
-def board_update(board_seq: int, data: BoardUpdate, user_seq: int):
+def board_update(request : Request, board_seq: int, data: BoardUpdate, user_seq: int):
     with session_factory() as db:
         stmt = select(FreeBoard).where(
             and_(
@@ -637,22 +693,29 @@ def board_update(board_seq: int, data: BoardUpdate, user_seq: int):
         user_stmt = select(UserInfo).where(UserInfo.no_seq == user_seq)
         user = db.execute(user_stmt).scalar_one()
 
-        return BoardRead(
+        boardDetailData = BoardRead(
             board_seq=board.board_seq,
             user_seq=board.user_seq,
             user_id=user.user_id,
             board_title=board.board_title,
             board_content=board.board_content,
             board_view=board.board_view,
-            board_create_date=board.board_create_date,
-            board_update_date=board.board_update_date,
+            board_create_date=board.board_create_date.strftime("%Y-%m-%d %H:%M:%S"),
+            board_update_date=board.board_update_date.strftime("%Y-%m-%d %H:%M:%S"),
             board_delete_yn=board.board_delete_yn
         )
+    
+        user_id = request.session.get("user_id")
+        no_seq = request.session.get("no_seq")
+
+        return JSONResponse(content=jsonable_encoder(boardDetailData))
 
 # 게시글 삭제
 @app.delete("/board/{board_seq}")
-def board_delete(board_seq: int, user_seq: int):
+def board_delete(request : Request, board_seq: int):
     with session_factory() as db:
+        user_seq = request.session.get("no_seq")
+
         stmt = select(FreeBoard).where(
             and_(
                 FreeBoard.board_seq == board_seq,
@@ -670,7 +733,7 @@ def board_delete(board_seq: int, user_seq: int):
         board.board_delete_yn = "Y"
         db.commit()
 
-        return {"msg": "게시글이 삭제되었습니다."}
+        
 
 # =====================================================================================================================================
 # 댓글 API
@@ -702,7 +765,7 @@ def comment_list(board_seq: int):
                 user_seq=comment.user_seq,
                 user_id=user_id,
                 comment_content=comment.comment_content,
-                comment_create_date=comment.comment_create_date,
+                comment_create_date=comment.comment_create_date.strftime("%Y-%m-%d %H:%M:%S"),
                 comment_delete_yn=comment.comment_delete_yn
             ))
 
@@ -710,8 +773,10 @@ def comment_list(board_seq: int):
 
 # 댓글 작성
 @app.post("/board/{board_seq}/comments", response_model=CommentRead)
-def comment_create(board_seq: int, data: CommentCreate, user_seq: int):
+def comment_create(request : Request, board_seq: int, data: CommentCreate):
     with session_factory() as db:
+        user_seq = request.session.get("no_seq")
+
         # 게시글 존재 확인
         board_stmt = select(FreeBoard).where(
             and_(
@@ -720,7 +785,7 @@ def comment_create(board_seq: int, data: CommentCreate, user_seq: int):
             )
         )
         board = db.execute(board_stmt).scalar_one_or_none()
-
+        
         if not board:
             raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다.")
 
@@ -750,14 +815,16 @@ def comment_create(board_seq: int, data: CommentCreate, user_seq: int):
             user_seq=new_comment.user_seq,
             user_id=user.user_id,
             comment_content=new_comment.comment_content,
-            comment_create_date=new_comment.comment_create_date,
+            comment_create_date=new_comment.comment_create_date.strftime("%Y-%m-%d %H:%M:%S"),
             comment_delete_yn=new_comment.comment_delete_yn
         )
 
 # 댓글 삭제
 @app.delete("/board/{board_seq}/comments/{comment_seq}")
-def comment_delete(board_seq: int, comment_seq: int, user_seq: int):
+def comment_delete(request : Request, board_seq: int, comment_seq: int):
     with session_factory() as db:
+        user_seq = request.session.get("no_seq")
+
         stmt = select(BoardComment).where(
             and_(
                 BoardComment.comment_seq == comment_seq,
@@ -771,11 +838,10 @@ def comment_delete(board_seq: int, comment_seq: int, user_seq: int):
             raise HTTPException(status_code=404, detail="댓글을 찾을 수 없습니다.")
 
         if comment.user_seq != user_seq:
-            raise HTTPException(status_code=403, detail="댓글을 삭제할 권한이 없습니다.")
+            raise HTTPException(status_code=403, detail=f"댓글을 삭제할 권한이 없습니다.{comment.user_seq} / {user_seq}")
 
         comment.comment_delete_yn = "Y"
         db.commit()
 
         return {"msg": "댓글이 삭제되었습니다."}
     
-
