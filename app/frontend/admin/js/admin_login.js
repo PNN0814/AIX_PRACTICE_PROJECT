@@ -6,8 +6,6 @@
 
 const API_BASE = "http://127.0.0.1:8000";
 
-function toast(msg){ alert(msg); }
-
 /* ========== 관리자 로그인 ========== */
 document.getElementById('adminLoginForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
@@ -21,7 +19,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e)=>
 
   // 유효성 검사
   if(!payload.admin_id || !payload.admin_pw){
-    toast('아이디와 비밀번호를 입력해주세요.');
+    alert('아이디와 비밀번호를 입력해주세요.');
     return;
   }
 
@@ -42,31 +40,28 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e)=>
     // 응답 에러 처리
     if(!res.ok){
       const err = await res.json().catch(()=>({detail:'로그인 실패'}));
-      toast(err.detail || '로그인 실패');
+      alert(err.detail || '로그인 실패');
       return;
+    } else {
+      //관리자 정보 받기
+      const admin = await res.json();
+
+      // 기존 프론트엔드 코드 호환성 유지
+      // admin_app.js에서 user_role, user_id를 체크하므로 추가
+      admin.user_role = 'ADMIN';
+      admin.user_id = admin.admin_id;
+      
+      // localStorage에 관리자 정보 저장
+      localStorage.setItem('user', JSON.stringify(admin));
+
+      alert('로그인 성공!');
+      
+      // 관리자 대시보드로 이동
+        location.href = '/admin/userPage';
     }
-
-    // 관리자 정보 받기
-    const admin = await res.json();
-
-    // 기존 프론트엔드 코드 호환성 유지
-    // admin_app.js에서 user_role, user_id를 체크하므로 추가
-    admin.user_role = 'ADMIN';
-    admin.user_id = admin.admin_id;
-    
-    // localStorage에 관리자 정보 저장
-    localStorage.setItem('user', JSON.stringify(admin));
-
-    toast('로그인 성공!');
-    
-    // 관리자 대시보드로 이동
-    setTimeout(()=>{
-      location.href = '/app/frontend/admin/html/index.html';
-    }, 500);
-    
   }catch(err){
     console.error('로그인 에러:', err);
-    toast('네트워크 오류 또는 서버 응답 없음');
+    alert('네트워크 오류 또는 서버 응답 없음');
   }
 });
 
