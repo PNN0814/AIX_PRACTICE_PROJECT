@@ -16,14 +16,14 @@ function esc(s){ const d=document.createElement('div'); d.textContent=s??''; ret
 // const u = me();
 // if(!(u && (u.user_role==='ADMIN' || u.user_id==='admin'))){
 //   toast('관리자만 접근 가능합니다.');
-//   location.href='/app/frontend/admin/html/login.html';
+//   location.href='/admin';
 // }
 
 /* ========== 로그아웃 ========== */
 document.getElementById('adminLogout')?.addEventListener('click', ()=>{
   if(confirm('로그아웃 하시겠습니까?')){
     localStorage.removeItem('user');
-    location.href='/app/frontend/admin/html/login.html';
+    location.href='/admin/loginPage';
   }
 });
 
