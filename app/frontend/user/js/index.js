@@ -156,10 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("doLogout");
     if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
-    const myBtn = document.getElementById("goMy");
-    if (myBtn) {
-        myBtn.addEventListener("click", () => {
-            window.location.href = "../html/mypage.html";
-        });
-    }
+    // const myBtn = document.getElementById("goMy");
+    // if (myBtn) {
+    //     myBtn.addEventListener("click", () => {
+    //         window.location.href = "../html/mypage.html";
+    //     });
+    // }
 });
