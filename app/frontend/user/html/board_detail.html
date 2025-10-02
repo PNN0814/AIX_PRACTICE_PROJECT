@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 상세</title>
+    <link rel="stylesheet" href="/static/user/css/style.css">
+    <link rel="stylesheet" href="/static/user/css/board_detail.css">
+</head>
+<body>
+    <!-- 세션 & 게시글 기본 정보 -->
+    <form id="formData">
+        <input type="hidden" id="no_seq" name="no_seq" value="{{no_seq}}">
+        <input type="hidden" id="user_id" name="user_id" value="{{user_id}}">
+        <input type="hidden" id="board_seq" name="board_seq" value="{{board_seq}}">
+    </form>
+
+    <div class="container">
+        <!-- 헤더 -->
+        <header class="board-header">
+            <h1>📝 게시글</h1>
+            <button class="btn-back" onclick="goToList()">← 목록으로</button>
+        </header>
+
+        <!-- 게시글 상세 -->
+        <div class="board-detail" id="boardDetail">
+            <div class="detail-header">
+                <h2 id="boardTitle"></h2>
+                <div class="detail-info">
+                    <span class="author" id="boardAuthor"></span>
+                    <span class="date" id="boardDate"></span>
+                    <span class="views" id="boardViews"></span>
+                </div>
+            </div>
+            <div class="detail-content" id="boardContent"></div>
+            <div class="detail-actions" id="boardActions"></div>
+        </div>
+
+        <!-- 댓글 영역 -->
+        <div class="comment-section">
+            <h3>💬 댓글 <span id="commentCount">0</span></h3>
+
+            <!-- 댓글 작성 -->
+            <div class="comment-write">
+                <textarea id="commentContent" placeholder="댓글을 입력하세요..." rows="3"></textarea>
+                <button id="btn-comment-submit" type="button">댓글 작성</button>
+            </div>
+
+            <!-- 댓글 목록 -->
+            <div class="comment-list" id="commentList">
+                <!-- JS로 동적으로 채워짐 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/user/js/board_detail.js"></script>
+</body>
+</html>

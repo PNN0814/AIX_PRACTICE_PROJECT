@@ -1,0 +1,455 @@
+/* board_detail.css - 게시글 상세 페이지 전용 스타일 */
+
+/* 배경 설정 */
+body {
+  background: url("/static/user/image/background.jpg") center center / cover fixed no-repeat;
+  background-color: #222;
+}
+
+/* 컨테이너 */
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* 헤더 영역 */
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 3px solid #000;
+  border-radius: 16px;
+  box-shadow: 6px 6px 0 #00d9ff;
+}
+
+.board-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #ff0066;
+  text-shadow: 2px 2px 0 #ffd60a;
+}
+
+/* 메인 상세 카드 */
+.board-detail {
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 8px 8px 0 #00d9ff;
+  margin-bottom: 24px;
+}
+
+/* 상세 헤더 - 제목만 */
+.detail-header {
+  background: linear-gradient(135deg, #ffe680, #ffd60a);
+  border: 2px solid #000;
+  border-radius: 12px 12px 0 0;
+  padding: 20px 24px 16px 24px;
+  margin: -32px -32px 0 -32px;
+  border-bottom: none;
+}
+
+.detail-header h2 {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #000;
+  margin: 0 0 12px 0;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* 메타 정보 영역 (작성자/날짜/조회수) - 제목 영역 안으로 */
+.detail-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.detail-info span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.author::before {
+  content: "✍️";
+  font-size: 1rem;
+}
+
+.date::before {
+  content: "🕐";
+  font-size: 1rem;
+}
+
+.views::before {
+  content: "👁";
+  font-size: 1rem;
+}
+
+/* 본문 내용 - 독립적인 영역으로 */
+.detail-content {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin: 24px 0;
+  min-height: 200px;
+  padding: 28px;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #333;
+}
+
+/* 액션 버튼 영역 - 본문 바깥으로 */
+.detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 0 -32px -32px -32px;
+  padding: 20px 24px;
+  background: #f8f9fa;
+  border-top: 2px dashed #ddd;
+  border-radius: 0 0 12px 12px;
+}
+
+.detail-actions button,
+.btn-edit,
+.btn-delete,
+.btn-back {
+  padding: 10px 18px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.btn-back {
+  background: #fff;
+  color: #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-back:hover {
+  background: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-edit {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-edit:hover {
+  background: linear-gradient(135deg, #5568d3, #6c3e99);
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.btn-delete {
+  background: linear-gradient(135deg, #e63946, #f07167);
+  color: #fff;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-delete:hover {
+  background: linear-gradient(135deg, #d62936, #e05f5a);
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* 댓글 영역 */
+.comment-section {
+  background: rgba(255, 255, 255, 0.95);
+  border: 3px solid #000;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 6px 6px 0 #ff0066;
+}
+
+.comment-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #ff0066;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comment-section h3::before {
+  content: "💬";
+  font-size: 1.5rem;
+}
+
+#commentCount {
+  background: linear-gradient(135deg, #ffd60a, #ff8c00);
+  border: 2px solid #000;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.9rem;
+  color: #000;
+  font-weight: 800;
+}
+
+/* 댓글 작성 영역 */
+.comment-write {
+  background: linear-gradient(135deg, #fffef7, #fefae0);
+  border: 2px solid #000;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.comment-write textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  resize: vertical;
+  min-height: 100px;
+  margin-bottom: 12px;
+  background: #fff;
+  transition: all 0.15s ease;
+}
+
+.comment-write textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 214, 10, 0.5);
+  transform: translateY(-1px);
+}
+
+.comment-write textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+#btn-comment-submit {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border: 2px solid #000;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+#btn-comment-submit:hover {
+  background: linear-gradient(135deg, #5568d3, #6c3e99);
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.25);
+}
+
+#btn-comment-submit:active {
+  transform: translateY(0);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* 댓글 목록 */
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comment-item {
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.15s ease;
+}
+
+.comment-item:hover {
+  transform: translateX(2px) translateY(-2px);
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.15);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.comment-author {
+  font-weight: 800;
+  color: #667eea;
+  font-size: 1rem;
+}
+
+.comment-author::before {
+  content: "✍️ ";
+  font-size: 0.9rem;
+}
+
+.comment-date {
+  color: #888;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.comment-content {
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.btn-comment-delete {
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #e63946, #f07167);
+  color: #fff;
+  border: 2px solid #000;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.btn-comment-delete:hover {
+  background: linear-gradient(135deg, #d62936, #e05f5a);
+  transform: translateY(-1px);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-comment-delete:active {
+  transform: translateY(0);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* 빈 상태 */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.empty-state::before {
+  content: "💭";
+  display: block;
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.empty-state-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #666;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .board-header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .board-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .board-detail {
+    padding: 20px;
+  }
+
+  .detail-header {
+    margin: -20px -20px 0 -20px;
+    padding: 16px 18px;
+  }
+
+  .detail-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .detail-info {
+    padding: 12px 18px;
+    margin: 0 -20px;
+    font-size: 0.85rem;
+  }
+
+  .detail-content {
+    font-size: 1rem;
+    padding: 20px;
+  }
+
+  .detail-actions {
+    flex-direction: column;
+    margin: 0 -20px -20px -20px;
+    padding: 16px 18px;
+  }
+
+  .detail-actions button,
+  .btn-edit,
+  .btn-delete,
+  .btn-back {
+    width: 100%;
+  }
+
+  .comment-section {
+    padding: 20px;
+  }
+
+  .comment-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .comment-write {
+    padding: 16px;
+  }
+
+  .comment-write textarea {
+    min-height: 80px;
+  }
+
+  .comment-item {
+    padding: 14px;
+  }
+
+  .comment-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* 마스코트가 가리지 않도록 z-index 조정 */
+.board-detail,
+.comment-section {
+  position: relative;
+  z-index: 10;
+}

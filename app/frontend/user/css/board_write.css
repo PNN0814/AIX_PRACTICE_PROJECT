@@ -1,0 +1,349 @@
+/* board_write.css - 게시글 작성/수정 페이지 전용 스타일 */
+
+/* 배경 설정 */
+body {
+  background: url("/static/user/image/background.jpg") center center / cover fixed no-repeat;
+  background-color: #222;
+}
+
+/* 컨테이너 중앙 정렬 */
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* 헤더 영역 */
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 3px solid #000;
+  border-radius: 16px;
+  box-shadow: 6px 6px 0 #00d9ff;
+}
+
+.board-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #ff0066;
+  text-shadow: 2px 2px 0 #ffd60a;
+}
+
+.btn-back {
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.btn-back:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* 폼 카드 */
+.board-form {
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 8px 8px 0 #00d9ff;
+  position: relative;
+  z-index: 10;
+}
+
+/* 폼 그룹 */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: #222;
+  letter-spacing: -0.02em;
+}
+
+/* 입력 필드 공통 스타일 */
+.form-input,
+.form-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: #fefae0;
+  transition: all 0.15s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 214, 10, 0.5);
+  transform: translateY(-1px);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* 제목 입력 */
+.form-input {
+  height: 52px;
+  font-weight: 600;
+}
+
+/* 내용 입력 */
+.form-textarea {
+  min-height: 400px;
+  resize: vertical;
+  line-height: 1.6;
+  font-size: 0.98rem;
+}
+
+/* 파일 업로드 영역 */
+.file-upload-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #f8f9fa;
+  border: 2px dashed #000;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-file-select {
+  background: linear-gradient(135deg, #00d9ff, #0099cc);
+  color: #fff;
+  border: 2px solid #000;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.btn-file-select:hover {
+  background: linear-gradient(135deg, #33e0ff, #00aadd);
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-file-select:active {
+  transform: translateY(0);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.file-info {
+  color: #666;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* 파일 목록 */
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+
+.file-item:hover {
+  background: #f8f9fa;
+  transform: translateX(4px);
+}
+
+.file-info-detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.file-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.file-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.file-name {
+  font-weight: 600;
+  color: #222;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-size {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.btn-file-remove {
+  background: #ff4444;
+  color: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.btn-file-remove:hover {
+  background: #ff6666;
+  transform: scale(1.1);
+}
+
+.btn-file-remove:active {
+  transform: scale(0.95);
+}
+
+/* 버튼 영역 */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 2px dashed #ccc;
+}
+
+.btn-cancel,
+.btn-submit {
+  padding: 12px 24px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.btn-cancel {
+  background: #fff;
+  color: #333;
+}
+
+.btn-cancel:hover {
+  background: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #ffd60a, #ff8c00);
+  color: #000;
+  min-width: 120px;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffed4e, #ffa500);
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-submit:active:not(:disabled),
+.btn-cancel:active {
+  transform: translateY(0);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .board-header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .board-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .board-form {
+    padding: 20px;
+  }
+
+  .form-group label {
+    font-size: 1rem;
+  }
+
+  .form-textarea {
+    min-height: 300px;
+  }
+
+  .file-upload-area {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-file-select {
+    width: 100%;
+  }
+
+  .file-info {
+    text-align: center;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn-cancel,
+  .btn-submit {
+    width: 100%;
+  }
+}
