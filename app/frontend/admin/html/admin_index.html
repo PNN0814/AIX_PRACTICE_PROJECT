@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <title>관리자 대시보드</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- 관리자 전용 -->
-  <link rel="stylesheet" href="/app/frontend/admin/css/admin.css" />
+  <!-- 공용 사용자 스타일 + 관리자 전용 -->
+  <link rel="stylesheet" href="/static/admin/css/admin.css" />
 </head>
 <body>
   <!-- 헤더 -->
@@ -14,17 +14,17 @@
   <div class="mascot-train">
     <!-- 보노보노 - 구르는 효과 -->
     <div class="mascot-item rolling-mascot">
-      <img src="/app/frontend/admin/image/rolling_mascot.png" alt="보노보노" />
+      <img src="/static/admin/image/rolling_mascot.png" alt="보노보노" />
     </div>
     
     <!-- 포로리 - 걷는 효과 -->
     <div class="mascot-item walking-mascot-1">
-      <img src="/app/frontend/admin/image/squirrel.png" alt="포로리" />
+      <img src="/static/admin/image/squirrel.png" alt="포로리" />
     </div>
     
     <!-- 너부리 - 걷는 효과 -->
     <div class="mascot-item walking-mascot-2">
-      <img src="/app/frontend/admin/image/raccoon.png" alt="너부리" />
+      <img src="/static/admin/image/raccoon.png" alt="너부리" />
     </div>
   </div>
 
@@ -33,7 +33,7 @@
       <p class="subtitle">We don't wanna you</p>
     </div>
     <div class="auth-area">
-      <button class="btn ghost" onclick="location.href='/app/frontend/user/html/index.html'">← 사용자 메인</button>
+      <button class="btn ghost" onclick="location.href='/static/frontend/user/html/index.html'">← 사용자 메인</button>
       <button class="btn danger" id="adminLogout">로그아웃</button>
     </div>
   </header>
@@ -98,10 +98,10 @@
 
   <!-- 마스코트 -->
   <aside class="admin-mascot admin-mascot--left">
-    <img src="/app/frontend/admin/image/mascot_sub.png" alt="좌측 마스코트" />
+    <img src="/static/admin/image/mascot_sub.png" alt="좌측 마스코트" />
   </aside>
   <aside class="admin-mascot admin-mascot--right">
-    <img src="/app/frontend/admin/image/mascot.png" alt="우측 마스코트" />
+    <img src="/static/admin/image/mascot.png" alt="우측 마스코트" />
   </aside>
 
   <!-- ========== 모달: 유저 추가 ========== -->
@@ -255,8 +255,6 @@
   </dialog>
 
   <!-- 관리자 JS -->
-  <script src="/app/frontend/admin/js/admin_app.js"></script>
+  <script src="/static/admin/js/admin_app.js"></script>
 </body>
-
 </html>
-
