@@ -5,7 +5,7 @@
   <title>관리자 로그인 | 채용공고만 하는 사이트</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <!-- 관리자 전용 스타일 -->
-  <link rel="stylesheet" href="/app/frontend/admin/css/admin.css"/>
+  <link rel="stylesheet" href="/static/admin/css/admin.css"/>
 </head>
 <body>
   <!-- 상단 헤더 -->
@@ -14,17 +14,17 @@
   <div class="mascot-train">
     <!-- 보노보노 - 구르는 효과 -->
     <div class="mascot-item rolling-mascot">
-      <img src="/app/frontend/admin/image/rolling_mascot.png" alt="보노보노" />
+      <img src="/static/admin/image/rolling_mascot.png" alt="보노보노" />
     </div>
     
     <!-- 포로리 - 걷는 효과 -->
     <div class="mascot-item walking-mascot-1">
-      <img src="/app/frontend/admin/image/squirrel.png" alt="포로리" />
+      <img src="/static/admin/image/squirrel.png" alt="포로리" />
     </div>
     
     <!-- 너부리 - 걷는 효과 -->
     <div class="mascot-item walking-mascot-2">
-      <img src="/app/frontend/admin/image/raccoon.png" alt="너부리" />
+      <img src="/static/admin/image/raccoon.png" alt="너부리" />
     </div>
   </div>
 
@@ -74,7 +74,7 @@
           <button 
             class="btn ghost" 
             type="button" 
-            onclick="location.href='/app/frontend/user/html/index.html'"
+            onclick="location.href='/app/frontend/admin/html/admin_index.html'"
           >
             취소
           </button>
@@ -85,15 +85,13 @@
 
   <!-- 좌/우 마스코트 -->
   <aside class="admin-mascot admin-mascot--left">
-    <img src="/app/frontend/admin/image/mascot_sub.png" alt="좌측 마스코트" />
+    <img src="/static/admin/image/mascot_sub.png" alt="좌측 마스코트" />
   </aside>
   <aside class="admin-mascot admin-mascot--right">
-    <img src="/app/frontend/admin/image/mascot.png" alt="우측 마스코트" />
+    <img src="/static/admin/image/mascot.png" alt="우측 마스코트" />
   </aside>
 
   <!-- JS -->
-  <script src="/app/frontend/admin/js/admin_login.js"></script>
+  <script src="/static/admin/js/admin_login.js"></script>
 </body>
-
 </html>
-
