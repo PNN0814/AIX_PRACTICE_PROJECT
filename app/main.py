@@ -309,6 +309,12 @@ def get_current_admin_user(authorization: Optional[str] = Header(None)):
 # 관리자 API (Admin API) - /admin/ prefix
 # =====================================================================================================================================
 
+# 관리자 로그인 페이지 - 2025-10-02 이유진
+@app.get("/admin/loginPage", response_class = HTMLResponse)
+async def login_page(request: Request):
+    return admin_temp.TemplateResponse("admin_login.html", {"request": request})
+
+# 로그인 처리 프로세스 - 2025-10-02 이유진
 @app.post("/admin/login", response_model=AdminLoginResponse)
 def admin_login(data: AdminLoginRequest):
     """
@@ -772,3 +778,4 @@ def comment_delete(board_seq: int, comment_seq: int, user_seq: int):
 
         return {"msg": "댓글이 삭제되었습니다."}
     
+
